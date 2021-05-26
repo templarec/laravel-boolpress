@@ -1,0 +1,25 @@
+li {
+    list-style: none;
+}
+.card {
+    margin-bottom: 15px;
+    .card-header {
+        text-transform: uppercase;
+    }
+    .card-body {
+        padding-left: 30px;
+        .contenuto {
+            margin-bottom: 20px;
+        }
+        .autore {
+            font-size: 12px;
+            font-style: italic;
+            &:before {
+                font-style: normal;
+                content: 'Autore: ';
+            }
+        }
+    }
+}
+
+

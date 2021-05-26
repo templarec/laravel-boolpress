@@ -43,11 +43,12 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string'
         ]);
+        $currentUser = Auth::user();
         $data = $request->all();
         $post = new Post();
         $post->fill($data);
-        $post->slug = 'to do';
-        $post->author = Auth::user('email');
+        $post->slug = $this->generaSlug($post->title);
+        $post->author = $currentUser->email;
         $post->save();
         return redirect()->route('admin.posts.index');
     }
@@ -60,7 +61,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+
     }
 
     /**
@@ -71,7 +72,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
@@ -83,7 +84,14 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string'
+        ]);
+        $data = $request->all();
+        $data['slug']= $this->generaSlug($data['title'], $post->title != $data['title']);
+        $post->update($data);
+        return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -95,5 +103,24 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+    private function generaSlug(string $title, bool $change = true) {
+        $slug = Str::slug($title, '-');
+
+        if (!$change) {
+            return $slug;
+        }
+
+        $slugBase = $slug;
+        $cont = 1;
+
+        $post_with_slug = Post::where('slug', '=', $slug)->first();
+        while ($post_with_slug) {
+            $slug = $slugBase . '-' . $cont;
+            $cont++;
+
+            $post_with_slug = Post::where('slug', '=', $slug)->first();
+        }
+        return $slug;
     }
 }

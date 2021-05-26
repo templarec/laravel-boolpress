@@ -10942,3 +10942,33 @@ a.text-dark:focus {
   }
 }
 
+li {
+  list-style: none;
+}
+
+.card {
+  margin-bottom: 15px;
+}
+
+.card .card-header {
+  text-transform: uppercase;
+}
+
+.card .card-body {
+  padding-left: 30px;
+}
+
+.card .card-body .contenuto {
+  margin-bottom: 20px;
+}
+
+.card .card-body .autore {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.card .card-body .autore:before {
+  font-style: normal;
+  content: "Autore: ";
+}
+
