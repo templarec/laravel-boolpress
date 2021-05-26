@@ -8,7 +8,12 @@
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
                 <div class="card-body">
-                    <a href="{{route('posts.index')}}">Visualizza i post</a>
+                    <ul>
+                        <li><a href="{{route('admin.posts.index')}}">Visualizza i post</a></li>
+                        <li><a href="{{route('admin.posts.create')}}">Inserisci un post</a></li>
+                    </ul>
+
+
                 </div>
             </div>
         </div>
