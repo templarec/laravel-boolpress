@@ -16,4 +16,8 @@ class HomeController extends Controller
        $posts = Post::all();
        return view('admin.posts.index', compact('posts'));
    }
+    public function dashboard() {
+
+        return view('admin.dashboard');
+    }
 }
