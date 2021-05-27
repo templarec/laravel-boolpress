@@ -18,6 +18,18 @@
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                        <div class="form-group">
+                            <label for="category_id"></label>
+                            <select name="category_id" id="category_id">
+                                <option value="">Seleziona categoria...</option>
+                                @foreach($categories as $categoria)
+                                    <option value="{{$categoria->id}}">{{$categoria->name}}</option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                            <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
 
                         <div class="form-group">
                             <label for="content">Contenuto</label>
