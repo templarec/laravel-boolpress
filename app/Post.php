@@ -12,4 +12,7 @@ class Post extends Model
         'slug',
         'author'
     ];
+    public function categories() {
+        return $this->belongsTo('App\Category');
+}
 }
