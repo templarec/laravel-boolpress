@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\Mail\SendNewMail;
 use App\Post;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -55,6 +57,7 @@ class PostController extends Controller
         $img_path = Storage::put('uploads', $data['image']);
         $post->img_path = $img_path;
         $post->save();
+        Mail::to('templarec@gmail.com')->send(new SendNewMail());
         return redirect()->route('admin.posts.index');
     }
 
