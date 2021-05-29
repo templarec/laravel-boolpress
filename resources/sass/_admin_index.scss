@@ -5,7 +5,9 @@ li {
     margin-bottom: 15px;
     .card-header {
         text-transform: uppercase;
-
+    .far.fa-trash-alt {
+        cursor: pointer;
+    }
     }
     .card-body {
         padding-left: 30px;

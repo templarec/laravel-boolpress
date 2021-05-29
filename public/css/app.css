@@ -10954,6 +10954,10 @@ li {
   text-transform: uppercase;
 }
 
+.card .card-header .far.fa-trash-alt {
+  cursor: pointer;
+}
+
 .card .card-body {
   padding-left: 30px;
 }
