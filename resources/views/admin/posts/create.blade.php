@@ -8,7 +8,7 @@
                     <div class="card-header">{{ __('Inserimento nuovo post') }}</div>
 
                     <div class="card-body">
-                        <form action="{{route('admin.posts.store')}}" method="post">
+                        <form action="{{route('admin.posts.store')}}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('POST')
                         <div class="form-group">
@@ -35,6 +35,13 @@
                             <label for="content">Contenuto</label>
                             <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content"> {{ old('content') }}</textarea>
                             @error('content')
+                            <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Media</label>
+                            <input class="form-control @error('image') is-invalid @enderror" id="image" type="file" name="image" value="">
+                            @error('image')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>

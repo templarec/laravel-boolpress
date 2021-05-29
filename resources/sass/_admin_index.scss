@@ -5,21 +5,37 @@ li {
     margin-bottom: 15px;
     .card-header {
         text-transform: uppercase;
+
     }
     .card-body {
         padding-left: 30px;
+        img.img-thumbnail {
+            width: 100px;
+            height: auto;
+        }
+        img.img-fluid {
+            width: 300px;
+            height: auto;
+        }
         .contenuto {
             margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
         }
         .autore {
             font-size: 12px;
             font-style: italic;
+            margin-top: 20px;
             &:before {
                 font-style: normal;
                 content: 'Autore: ';
             }
         }
     }
+}
+.form-group.img-thumbnail {
+    width: 50px;
+    height: auto;
 }
 
 

@@ -11,7 +11,8 @@
                     <ul>
                         <li><a href="{{route('admin.posts.index')}}">Visualizza i post</a></li>
                         <li><a href="{{route('admin.posts.create')}}">Inserisci un post</a></li>
-                        <li><a href="{{route('admin.categories.create')}}">Crea categoria</a></li>
+
+                        <li><a href="{{route('admin.categories.index')}}">Lista categorie</a></li>
                     </ul>
 
 

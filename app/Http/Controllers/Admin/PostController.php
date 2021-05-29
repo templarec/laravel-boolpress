@@ -7,6 +7,7 @@ use App\Post;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -51,6 +52,8 @@ class PostController extends Controller
         $post->fill($data);
         $post->slug = $this->generaSlug($post->title);
         $post->author = $currentUser->email;
+        $img_path = Storage::put('uploads', $data['image']);
+        $post->img_path = $img_path;
         $post->save();
         return redirect()->route('admin.posts.index');
     }
@@ -93,6 +96,8 @@ class PostController extends Controller
         ]);
         $data = $request->all();
         $data['slug']= $this->generaSlug($data['title'], $post->title != $data['title']);
+        $img_path = Storage::put('uploads', $data['image']);
+        $post->img_path = $img_path;
         $post->update($data);
         return redirect()->route('admin.posts.index');
     }
@@ -105,7 +110,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect()->route('admin.posts.index');
     }
     private function generaSlug(string $title, bool $change = true) {
         $slug = Str::slug($title, '-');

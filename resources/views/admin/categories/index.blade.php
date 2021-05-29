@@ -4,13 +4,19 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                @foreach($posts as $post)
+                <a href="{{route('admin.categories.create')}}">Crea categoria</a>
+                @foreach($categories as $category)
                 <div class="card">
-                    <div class="card-header">{{$post->title}} <span><a href="{{route('admin.posts.edit', ['post' => $post->id])}}"><i class="far fa-edit"></i></a></span></div>
+                    <div class="card-header"><a href="{{route('category.index', ['slug' => $category->slug])}}"> {{$category->name}} </a><span><a href="{{route('admin.categories.edit', ['category' => $category->id])}}"><i class="far fa-edit"></i></a></span></div>
 
                     <div class="card-body">
-                        <div class="contenuto">{{$post->content}}</div>
-                        <div class="autore">{{$post->author}}</div>
+                        <a href="{{route('admin.categories.show', ['category' => $category->id])}}">Mostra</a>
+                        <a class="btn" onclick="event.preventDefault();
+                                  this.nextElementSibling.submit();">Cancella</a>
+                        <form action="{{route('admin.categories.destroy', ['category' => $category->id])}}" method="POST" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
                     </div>
                 </div>
                 @endforeach

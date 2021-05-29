@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Category;
 use App\Http\Controllers\Controller;
+use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -18,7 +19,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -43,6 +45,7 @@ class CategoryController extends Controller
             'name' => 'required|string|max:32'
         ]);
         $data = $request->all();
+        $data['slug'] = $this->genSlug($data['name']);
         $categoria = new Category();
         $categoria->fill($data);
         $categoria->save();
@@ -65,11 +68,12 @@ class CategoryController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function edit(Category $category)
     {
-        //
+
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -81,7 +85,13 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:32'
+        ]);
+        $data = $request->all();
+        $data['slug'] = $this->genSlug($data['name'], $data['name'] != $category->name, $category->slug);
+        $category->update($data);
+        return redirect()->route('admin.categories.index');
     }
 
     /**
@@ -92,6 +102,28 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->route('admin.categories.index');
+    }
+
+    private function genSlug(string $title, bool $change = true, string $old_slug = '')
+    {
+        if (!$change) {
+            return $old_slug;
+        }
+
+        $slug = Str::slug($title, '-');
+        $slug_base = $slug;
+        $contatore = 1;
+
+        $post_with_slug = Category::where('slug', '=', $slug)->first(); //Post {} || NULL
+        while($post_with_slug) {
+            $slug = $slug_base . '-' . $contatore;
+            $contatore++;
+
+            $post_with_slug = Category::where('slug', '=', $slug)->first(); //Post {} || NULL
+        }
+
+        return $slug;
     }
 }

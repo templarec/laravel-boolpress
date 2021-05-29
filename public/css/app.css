@@ -10958,17 +10958,35 @@ li {
   padding-left: 30px;
 }
 
+.card .card-body img.img-thumbnail {
+  width: 100px;
+  height: auto;
+}
+
+.card .card-body img.img-fluid {
+  width: 300px;
+  height: auto;
+}
+
 .card .card-body .contenuto {
   margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
 }
 
 .card .card-body .autore {
   font-size: 12px;
   font-style: italic;
+  margin-top: 20px;
 }
 
 .card .card-body .autore:before {
   font-style: normal;
   content: "Autore: ";
+}
+
+.form-group.img-thumbnail {
+  width: 50px;
+  height: auto;
 }
 
