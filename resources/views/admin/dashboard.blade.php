@@ -13,6 +13,7 @@
                         <li><a href="{{route('admin.posts.create')}}">Inserisci un post</a></li>
 
                         <li><a href="{{route('admin.categories.index')}}">Lista categorie</a></li>
+                        <li><a href="{{route('admin.tags.index')}}">Lista tags</a></li>
                     </ul>
 
 

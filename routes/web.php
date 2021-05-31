@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController@index')->name('index');
 Route::get('posts/{slug}', 'PostController@show')->name('posts.show');
 Route::get('categories/{slug}', 'CategoryController@index')->name('category.index');
+Route::get('tags/{slug}', 'TagController@index')->name('tags.show');
 Auth::routes();
 
 
@@ -29,4 +30,6 @@ Route::prefix('admin')
         Route::get('dashboard', 'HomeController@dashboard')->name('dashboard');
         Route::resource('posts', 'PostController');
         Route::resource('categories', 'CategoryController');
+        Route::resource('tags', 'TagController');
+
     });
