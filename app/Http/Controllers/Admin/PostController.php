@@ -6,11 +6,15 @@ use App\Category;
 use App\Mail\SendNewMail;
 use App\Post;
 use App\Http\Controllers\Controller;
+use App\Tag;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Psr\Log\NullLogger;
 
 class PostController extends Controller
 {
@@ -32,8 +36,9 @@ class PostController extends Controller
      */
     public function create()
     {
+        $tags = Tag::all();
         $categories = Category::all();
-        return view('admin.posts.create', compact('categories'));
+        return view('admin.posts.create', compact('categories'))->with('tags', $tags);
     }
 
     /**
@@ -45,18 +50,31 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'category_id' => 'exists:categories,id|nullable',
             'title' => 'required|string|max:255',
-            'content' => 'required|string'
+            'content' => 'required|string',
+            'img_path' => 'image|max:2048|nullable',
+            'tag_id.*' => 'exists:tags,id' //asterisco se inserisco più di un tag nel form
         ]);
         $currentUser = Auth::user();
         $data = $request->all();
+
+        $img_path = NULL;
+        if(array_key_exists('img_path', $data)) {
+            $img_path = Storage::put('uploads', $data['image']);
+        }
         $post = new Post();
         $post->fill($data);
         $post->slug = $this->generaSlug($post->title);
         $post->author = $currentUser->email;
-        $img_path = Storage::put('uploads', $data['image']);
+
         $post->img_path = $img_path;
+
         $post->save();
+        if(array_key_exists('tags_id', $data)) {
+            $post->tags()->attach($data['tags_id']);
+        }
+
         Mail::to($currentUser->email)->send(new SendNewMail());
         return redirect()->route('admin.posts.index');
     }
@@ -81,7 +99,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::all();
-        return view('admin.posts.edit', compact('post'))->with('categories', $categories);
+        $tags = Tag::all();
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -94,14 +113,28 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $request->validate([
+            'category_id' => 'exists:categories,id|nullable',
             'title' => 'required|string|max:255',
-            'content' => 'required|string'
+            'content' => 'required|string',
+            'img_path' => 'image|max:2048|nullable',
+            'tag_id.*' => 'exists:tags,id'
         ]);
         $data = $request->all();
         $data['slug']= $this->generaSlug($data['title'], $post->title != $data['title']);
-        $img_path = Storage::put('uploads', $data['image']);
-        $post->img_path = $img_path;
+
+        if (array_key_exists('img_path', $data)) {
+            $img_path = Storage::put('uploads', $data['image']);
+            $data['img_path'] = $img_path;
+        }
+
+
         $post->update($data);
+
+        if (array_key_exists('tag_id', $data)) {
+            $post->tags()->sync($data['tag_id']);
+        } else {
+            $post->tags()->detach();
+        }
         return redirect()->route('admin.posts.index');
     }
 

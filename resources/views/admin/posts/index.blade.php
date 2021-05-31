@@ -4,10 +4,22 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+
                 @foreach($posts as $post)
                 <div class="card">
-                    <div class="card-header"><a href="{{route('posts.show', ['slug' => $post->slug])}}"> {{$post->title}} </a> <span class="float-right p-1"><a href="{{route('admin.posts.edit', ['post' => $post->id])}}"><i class="far fa-edit"></i></a></span> <a class="p-1 float-right" onclick="event.preventDefault();
-                                  document.getElementById('{{$post->slug}}').submit();"><i class="far fa-trash-alt"></i></a> </div>
+                    <div class="card-header">
+                        <a href="{{route('posts.show', ['slug' => $post->slug])}}"> {{$post->title}} </a>
+                        {{--<small>{{$post->tags->name}}</small>--}}
+                        <span class="float-right p-1">
+                            <a href="{{route('admin.posts.edit', ['post' => $post->id])}}">
+                                <i class="far fa-edit"></i>
+                            </a>
+                        </span>
+                        <a class="p-1 float-right" onclick="event.preventDefault();
+                                  document.getElementById('{{$post->slug}}').submit();">
+                            <i class="far fa-trash-alt"></i>
+                        </a>
+                    </div>
 
                     <div class="card-body">
                         @if($post->img_path != NULL)

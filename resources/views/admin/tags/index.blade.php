@@ -7,7 +7,7 @@
                 <a href="{{route('admin.tags.create')}}">Crea tag</a>
                 @foreach($tags as $tag)
                 <div class="card">
-                    <div class="card-header"><a href="{{--{{route('category.index', ['slug' => $category->slug])}}--}}"> {{$tag->name}} </a><span><a href="{{route('admin.tags.edit', ['tag' => $tag->id])}}"><i class="far fa-edit"></i></a></span></div>
+                    <div class="card-header"><a href="{{route('tags.show', ['slug' => $tag->slug])}}"> {{$tag->name}} </a><span><a href="{{route('admin.tags.edit', ['tag' => $tag->id])}}"><i class="far fa-edit"></i></a></span></div>
 
                     <div class="card-body">
 
