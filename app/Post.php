@@ -13,7 +13,7 @@ class Post extends Model
         'author',
         'category_id'
     ];
-    public function categories() {
+    public function category() {
         return $this->belongsTo('App\Category');
     }
     public function tags() {
